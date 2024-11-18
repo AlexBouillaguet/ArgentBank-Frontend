@@ -1,8 +1,16 @@
+import Footer from '../../components/Footer';
+import Header from '../../components/Header';
+import SignInForm from '../../components/SignInForm';
+
 const SignIn = () => {
      return (
-       <div>
-         <h1>Sign In</h1>
-       </div>
+       <>
+         <Header />
+         <main className="main bg-dark">
+          <SignInForm />
+         </main>
+         <Footer />
+       </>
      );
    }
    
