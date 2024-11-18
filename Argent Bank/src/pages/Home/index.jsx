@@ -1,3 +1,4 @@
+import Footer from '../../components/Footer';
 import Header from '../../components/Header';
 import Hero from '../../components/Hero';
 import Features from '../../containers/Features';
@@ -10,6 +11,7 @@ const Home = () => {
           <Hero />
           <Features />
          </main>
+         <Footer />
        </>
      );
    }
