@@ -5,12 +5,14 @@ import logo from "../../assets/img/argentBankLogo.png"
 import "./index.scss"
 
 const Header = () => {
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const user = useSelector((state) => state.user.user)
+  // Initialisation des hooks nécessaires
+  const dispatch = useDispatch() // Récupération de la fonction dispatch pour envoyer des actions Redux
+  const navigate = useNavigate() // Récupération de la fonction navigate pour changer de page
+  const user = useSelector((state) => state.user.user) // Accès à l'utilisateur connecté depuis le store Redux
 
+  // Fonction de déconnexion
   const handleSignOut = () => {
-    dispatch(logout())
+    dispatch(logout()) // Envoi de l'action de déconnexion au store Redux
     localStorage.removeItem("token")
     navigate("/")
   }

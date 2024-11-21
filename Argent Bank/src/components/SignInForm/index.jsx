@@ -9,17 +9,21 @@ import {
 import "./index.scss"
 
 const SignInForm = () => {
+  // Hooks pour gérer l'état et la navigation
   const navigate = useNavigate()
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const dispatch = useDispatch()
-  const { isLoading, error } = useSelector((state) => state.user)
+  const [email, setEmail] = useState("") // Gestion de l'état local pour l'email
+  const [password, setPassword] = useState("") // Gestion de l'état local pour le mot de passe
+  const dispatch = useDispatch() // Permet d'envoyer des actions Redux
+  const { isLoading, error } = useSelector((state) => state.user) // Récupère l'état de l'utilisateur dans Redux (chargement et erreurs)
 
+  // Fonction de gestion de l'envoi du formulaire
   const handleSubmit = async (e) => {
     e.preventDefault()
-    dispatch(loginStart())
+    dispatch(loginStart()) // Déclenche l'action pour indiquer le début de la connexion
+
 
     try {
+      // Envoi de la requête de connexion avec l'email et le mot de passe
       const response = await fetch("http://localhost:3001/api/v1/user/login", {
         method: "POST",
         headers: {
@@ -37,6 +41,7 @@ const SignInForm = () => {
 
       localStorage.setItem("token", data.body.token)
 
+      // Envoi d'une autre requête pour récupérer les informations de l'utilisateur
       const userResponse = await fetch(
         "http://localhost:3001/api/v1/user/profile",
         {
@@ -47,8 +52,8 @@ const SignInForm = () => {
         }
       )
 
-      const userData = await userResponse.json()
-      dispatch(loginSuccess(userData.body))
+      const userData = await userResponse.json() // Récupération des données du profil utilisateur
+      dispatch(loginSuccess(userData.body)) // Déclenche l'action pour mettre à jour l'état de l'utilisateur avec les nouvelles données
 
       navigate("/user")
     } catch (err) {
