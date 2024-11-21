@@ -1,21 +1,23 @@
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
 import {
   loginStart,
   loginSuccess,
   loginFailure,
-} from "../../features/userSlice";
-import "./index.scss";
+} from "../../features/userSlice"
+import "./index.scss"
 
 const SignInForm = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const dispatch = useDispatch();
-  const { isLoading, error } = useSelector((state) => state.user);
+  const navigate = useNavigate()
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const dispatch = useDispatch()
+  const { isLoading, error } = useSelector((state) => state.user)
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    dispatch(loginStart());
+    e.preventDefault()
+    dispatch(loginStart())
 
     try {
       const response = await fetch("http://localhost:3001/api/v1/user/login", {
@@ -24,22 +26,35 @@ const SignInForm = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ email, password }),
-      });
+      })
 
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Login failed");
+        const errorData = await response.json()
+        throw new Error(errorData.message || "Login failed")
       }
 
-      const data = await response.json();
-      dispatch(loginSuccess(data.user));
-      localStorage.setItem("token", data.token);
+      const data = await response.json()
 
-      window.location.href = `${window.location.origin}/user`;
+      localStorage.setItem("token", data.body.token)
+
+      const userResponse = await fetch(
+        "http://localhost:3001/api/v1/user/profile",
+        {
+          headers: {
+            Authorization: `Bearer ${data.body.token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      )
+
+      const userData = await userResponse.json()
+      dispatch(loginSuccess(userData.body))
+
+      navigate("/user")
     } catch (err) {
-      dispatch(loginFailure(err.message));
+      dispatch(loginFailure(err.message))
     }
-  };
+  }
 
   return (
     <section className="sign-in-content">
@@ -74,7 +89,7 @@ const SignInForm = () => {
       </form>
       {error && <p className="error-message">{error}</p>}
     </section>
-  );
-};
+  )
+}
 
-export default SignInForm;
+export default SignInForm
