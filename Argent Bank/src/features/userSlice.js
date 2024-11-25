@@ -1,36 +1,81 @@
-import { createSlice } from "@reduxjs/toolkit" // Importation de la fonction 'createSlice' depuis Redux Toolkit
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+
+// Action asynchrone pour la connexion
+export const loginUser = createAsyncThunk(
+  "user/login",
+  async ({ email, password }, thunkAPI) => {
+    try {
+      // Requête pour obtenir le token
+      const response = await fetch("http://localhost:3001/api/v1/user/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Login failed");
+      }
+
+      const data = await response.json();
+      localStorage.setItem("token", data.body.token);
+
+      // Requête pour obtenir les infos utilisateur
+      const userResponse = await fetch(
+        "http://localhost:3001/api/v1/user/profile",
+        {
+          headers: {
+            Authorization: `Bearer ${data.body.token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!userResponse.ok) {
+        throw new Error("Failed to fetch user profile");
+      }
+
+      const userData = await userResponse.json();
+      return userData.body; // Retourne les données utilisateur
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message); // Gestion des erreurs
+    }
+  }
+);
 
 const initialState = {
-  user: null, // L'utilisateur est initialement nul (pas connecté)
-  loading: false, // Le statut de chargement est initialement faux
-  error: null, // Aucun message d'erreur au départ
-}
+  user: null,
+  isLoading: false,
+  error: null,
+};
 
 const userSlice = createSlice({
-  name: "user", // Le nom du slice, utilisé pour identifier la partie de l'état
-  initialState, // L'état initial défini plus haut
+  name: "user",
+  initialState,
   reducers: {
-    // Actions et réducteurs pour gérer l'état de l'utilisateur
-    loginStart(state) {
-      state.loading = true
-      state.error = null
-    },
-    loginSuccess(state, action) {
-      state.loading = false
-      state.user = action.payload // On met à jour l'utilisateur avec les données de la réponse (action.payload)
-    },
-    loginFailure(state, action) {
-      state.loading = false
-      state.error = action.payload // On stocke l'erreur retournée (action.payload)
-    },
     logout(state) {
-      state.user = null
+      state.user = null;
+      localStorage.removeItem("token");
     },
   },
-})
+  extraReducers: (builder) => {
+    builder
+      .addCase(loginUser.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(loginUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = action.payload;
+      })
+      .addCase(loginUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      });
+  },
+});
 
-// Export des actions créées par Redux Toolkit
-export const { loginStart, loginSuccess, loginFailure, logout } =
-  userSlice.actions
-// Exportation du réducteur pour qu'il soit utilisé dans le store Redux
-export default userSlice.reducer
+export const { logout } = userSlice.actions;
+export default userSlice.reducer;
