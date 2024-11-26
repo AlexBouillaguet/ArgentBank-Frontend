@@ -15,8 +15,9 @@ import User from "./pages/User"
 // Composant ProtectedRoute pour protéger l'accès à certaines routes
 const ProtectedRoute = ({ children }) => {
   const user = useSelector((state) => state.user.user)
+  const token = localStorage.getItem("token")
 
-  if (!user) {
+  if (!user && !token) {
     return <Navigate to="/sign-in" />
   }
 
@@ -24,6 +25,21 @@ const ProtectedRoute = ({ children }) => {
 }
 
 ProtectedRoute.propTypes = {
+  children: PropTypes.node.isRequired,
+}
+
+const RedirectIfLoggedIn = ({ children }) => {
+  const user = useSelector((state) => state.user.user)
+  const token = localStorage.getItem("token")
+
+  if (user || token) {
+    return <Navigate to="/user" />
+  }
+
+  return children
+}
+
+RedirectIfLoggedIn.propTypes = {
   children: PropTypes.node.isRequired,
 }
 
@@ -59,7 +75,14 @@ function App() {
     >
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/sign-in" element={<SignIn />} />
+        <Route
+          path="/sign-in"
+          element={
+            <RedirectIfLoggedIn>
+              <SignIn />
+            </RedirectIfLoggedIn>
+          }
+        />
         <Route
           path="/user"
           element={

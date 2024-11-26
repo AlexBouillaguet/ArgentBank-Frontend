@@ -31,18 +31,16 @@ const Header = () => {
         {user ? (
           <>
             <Link className="main-nav-item" to="/user">
-              <i className="fa fa-user-circle"></i>
-              {user.firstName}
+              <i className="fa fa-user-circle"></i>{" "}
+              {user.userName || user.firstName}
             </Link>
             <Link className="main-nav-item" onClick={handleSignOut} to="/">
-              <i className="fa fa-sign-out"></i>
-              Sign Out
+              <i className="fa fa-sign-out"></i> Sign Out
             </Link>
           </>
         ) : (
           <Link className="main-nav-item" to="/sign-in">
-            <i className="fa fa-user-circle"></i>
-            Sign In
+            <i className="fa fa-user-circle"></i> Sign In
           </Link>
         )}
       </div>

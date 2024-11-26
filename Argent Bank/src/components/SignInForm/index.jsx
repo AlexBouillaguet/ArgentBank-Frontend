@@ -26,10 +26,10 @@ const SignInForm = () => {
       <h1>Sign In</h1>
       <form onSubmit={handleSubmit}>
         <div className="input-wrapper">
-          <label htmlFor="email">Email</label>
+          <label htmlFor="username">Username</label>
           <input
             type="email"
-            id="email"
+            id="username"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
