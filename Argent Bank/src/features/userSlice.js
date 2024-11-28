@@ -20,7 +20,7 @@ export const loginUser = createAsyncThunk(
       }
 
       const data = await response.json()
-      localStorage.setItem("token", data.body.token)
+      sessionStorage.setItem("token", data.body.token)
 
       // Requête pour obtenir les infos utilisateur
       const userResponse = await fetch(
@@ -49,7 +49,7 @@ export const updateUser = createAsyncThunk(
   "user/updateProfile",
   async ({ username }, thunkAPI) => {
     try {
-      const token = localStorage.getItem("token")
+      const token = sessionStorage.getItem("token")
       const response = await fetch(
         "http://localhost:3001/api/v1/user/profile",
         {
@@ -86,7 +86,7 @@ const userSlice = createSlice({
   reducers: {
     logout(state) {
       state.user = null
-      localStorage.removeItem("token")
+      sessionStorage.removeItem("token")
     },
   },
   extraReducers: (builder) => {

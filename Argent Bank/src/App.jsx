@@ -15,7 +15,7 @@ import User from "./pages/User"
 // Composant ProtectedRoute pour protéger l'accès à certaines routes
 const ProtectedRoute = ({ children }) => {
   const user = useSelector((state) => state.user.user)
-  const token = localStorage.getItem("token")
+  const token = sessionStorage.getItem("token")
 
   if (!user && !token) {
     return <Navigate to="/sign-in" />
@@ -30,7 +30,7 @@ ProtectedRoute.propTypes = {
 
 const RedirectIfLoggedIn = ({ children }) => {
   const user = useSelector((state) => state.user.user)
-  const token = localStorage.getItem("token")
+  const token = sessionStorage.getItem("token")
 
   if (user || token) {
     return <Navigate to="/user" />
@@ -47,7 +47,7 @@ function App() {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    const token = localStorage.getItem("token")
+    const token = sessionStorage.getItem("token")
     if (token) {
       fetch("http://localhost:3001/api/v1/user/profile", {
         headers: {

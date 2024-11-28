@@ -105,7 +105,7 @@ paths:
         - Bearer: []
       tags:
         - Transactions Module
-      summary: Retrieve user transactions
+      summary: User transactions
       description: Retrieve all transactions for the authenticated user, optionally filtered by month.
       parameters:
         - in: query
@@ -132,7 +132,7 @@ paths:
         - Bearer: []
       tags:
         - Transactions Module
-      summary: Retrieve transaction details
+      summary: Transaction details
       description: Get detailed information about a specific transaction by its ID.
       parameters:
         - in: path

@@ -13,7 +13,7 @@ const Header = () => {
   // Fonction de déconnexion
   const handleSignOut = () => {
     dispatch(logout()) // Envoi de l'action de déconnexion au store Redux
-    localStorage.removeItem("token")
+    sessionStorage.removeItem("token")
     navigate("/")
   }
 
