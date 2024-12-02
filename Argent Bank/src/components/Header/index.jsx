@@ -1,19 +1,19 @@
 import { Link, useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
-import { logout } from "../../features/userSlice"
+import { logout } from "../../features/authSlice"
+import { clearUserData } from "../../features/userSlice"
 import logo from "../../assets/img/argentBankLogo.png"
 import "./index.scss"
 
 const Header = () => {
-  // Initialisation des hooks nécessaires
-  const dispatch = useDispatch() // Récupération de la fonction dispatch pour envoyer des actions Redux
-  const navigate = useNavigate() // Récupération de la fonction navigate pour changer de page
-  const user = useSelector((state) => state.user.user) // Accès à l'utilisateur connecté depuis le store Redux
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const { userData } = useSelector((state) => state.user)
+  const { isAuthenticated } = useSelector((state) => state.auth)
 
-  // Fonction de déconnexion
   const handleSignOut = () => {
-    dispatch(logout()) // Envoi de l'action de déconnexion au store Redux
-    sessionStorage.removeItem("token")
+    dispatch(logout())
+    dispatch(clearUserData())
     navigate("/")
   }
 
@@ -28,11 +28,11 @@ const Header = () => {
         <h1 className="sr-only">Argent Bank</h1>
       </Link>
       <div>
-        {user ? (
+        {isAuthenticated && userData ? (
           <>
             <Link className="main-nav-item" to="/user">
               <i className="fa fa-user-circle"></i>{" "}
-              {user.userName || user.firstName}
+              {userData.userName || userData.firstName}
             </Link>
             <Link className="main-nav-item" onClick={handleSignOut} to="/">
               <i className="fa fa-sign-out"></i> Sign Out

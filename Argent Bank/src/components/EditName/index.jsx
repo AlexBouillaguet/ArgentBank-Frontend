@@ -6,8 +6,8 @@ import "./index.scss"
 
 const EditName = ({ setIsEditing }) => {
   const dispatch = useDispatch()
-  const user = useSelector((state) => state.user.user)
-  const [username, setUsername] = useState(user.userName || "")
+  const { userData } = useSelector((state) => state.user)
+  const [username, setUsername] = useState(userData.userName || "")
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -31,7 +31,7 @@ const EditName = ({ setIsEditing }) => {
           <label>First name:</label>
           <input
             type="text"
-            value={user.firstName}
+            value={userData.firstName}
             disabled
             style={{ backgroundColor: "#ccc" }}
           />
@@ -40,7 +40,7 @@ const EditName = ({ setIsEditing }) => {
           <label>Last name:</label>
           <input
             type="text"
-            value={user.lastName}
+            value={userData.lastName}
             disabled
             style={{ backgroundColor: "#ccc" }}
           />

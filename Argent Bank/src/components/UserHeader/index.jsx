@@ -5,7 +5,7 @@ import "./index.scss"
 
 const UserHeader = () => {
   const [isEditing, setIsEditing] = useState(false)
-  const user = useSelector((state) => state.user.user)
+  const { userData } = useSelector((state) => state.user)
 
   if (isEditing) {
     return <EditName setIsEditing={setIsEditing} />
@@ -16,12 +16,11 @@ const UserHeader = () => {
       <h1>
         Welcome back
         <br />
-        {user ? `${user.firstName} ${user.lastName}` : ""} !
+        {userData ? `${userData.firstName} ${userData.lastName}` : ""} !
       </h1>
       <button
         className="edit-button"
         onClick={() => {
-          console.log("Click détecté")
           setIsEditing(true)
         }}
       >

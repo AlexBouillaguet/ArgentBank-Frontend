@@ -1,7 +1,8 @@
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
-import { loginUser } from "../../features/userSlice"
+import { loginUser } from "../../features/authSlice"
+import { fetchUserProfile } from "../../features/userSlice"
 import "./index.scss"
 
 const SignInForm = () => {
@@ -9,15 +10,15 @@ const SignInForm = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const dispatch = useDispatch()
-  const { isLoading, error } = useSelector((state) => state.user)
+  const { isLoading, error } = useSelector((state) => state.auth)
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    dispatch(loginUser({ email, password })).then((action) => {
-      if (loginUser.fulfilled.match(action)) {
-        navigate("/user")
-      }
-    })
+    const resultLogin = await dispatch(loginUser({ email, password }))
+    if (loginUser.fulfilled.match(resultLogin)) {
+      await dispatch(fetchUserProfile())
+      navigate("/user")
+    }
   }
 
   return (
