@@ -83,38 +83,38 @@ const initialState = {
 const userSlice = createSlice({
   name: "user",
   initialState,
+  extraReducers: (builder) => {
+    builder
+    .addCase(loginUser.pending, (state) => {
+      state.isLoading = true
+      state.error = null
+    })
+    .addCase(loginUser.fulfilled, (state, action) => {
+      state.isLoading = false
+      state.user = action.payload
+    })
+    .addCase(loginUser.rejected, (state, action) => {
+      state.isLoading = false
+      state.error = action.payload
+    })
+    .addCase(updateUser.pending, (state) => {
+      state.isLoading = true
+      state.error = null
+    })
+    .addCase(updateUser.fulfilled, (state, action) => {
+      state.isLoading = false
+      state.user = action.payload
+    })
+    .addCase(updateUser.rejected, (state, action) => {
+      state.isLoading = false
+      state.error = action.payload
+    })
+  },
   reducers: {
     logout(state) {
       state.user = null
       sessionStorage.removeItem("token")
     },
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(loginUser.pending, (state) => {
-        state.isLoading = true
-        state.error = null
-      })
-      .addCase(loginUser.fulfilled, (state, action) => {
-        state.isLoading = false
-        state.user = action.payload
-      })
-      .addCase(loginUser.rejected, (state, action) => {
-        state.isLoading = false
-        state.error = action.payload
-      })
-      .addCase(updateUser.pending, (state) => {
-        state.isLoading = true
-        state.error = null
-      })
-      .addCase(updateUser.fulfilled, (state, action) => {
-        state.isLoading = false
-        state.user = action.payload
-      })
-      .addCase(updateUser.rejected, (state, action) => {
-        state.isLoading = false
-        state.error = action.payload
-      })
   },
 })
 

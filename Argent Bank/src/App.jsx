@@ -18,7 +18,7 @@ const ProtectedRoute = ({ children }) => {
   const token = sessionStorage.getItem("token")
 
   if (!user && !token) {
-    return <Navigate to="/sign-in" />
+    return <Navigate to="/" />
   }
 
   return children
