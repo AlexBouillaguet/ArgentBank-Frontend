@@ -1,6 +1,7 @@
-import "./index.scss";
-import PropTypes from "prop-types";
+import "./index.scss"
+import PropTypes from "prop-types"
 
+// Définition du composant Account qui prend en props : title, balance, et description
 const Account = ({ title, balance, description }) => {
   return (
     <section className="account">
@@ -13,13 +14,13 @@ const Account = ({ title, balance, description }) => {
         <button className="transaction-button">View transactions</button>
       </div>
     </section>
-  );
-};
+  )
+}
 
 Account.propTypes = {
   title: PropTypes.string.isRequired,
   balance: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   description: PropTypes.string.isRequired,
-};
+}
 
-export default Account;
+export default Account

@@ -9,15 +9,54 @@ const SignInForm = () => {
   const navigate = useNavigate()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [emailError, setEmailError] = useState("")
+  const [formError, setFormError] = useState("")
   const dispatch = useDispatch()
-  const { isLoading, error } = useSelector((state) => state.auth)
+  const { isLoading } = useSelector((state) => state.auth)
 
+  // Fonction pour valider le format de l'email
+  const validateEmail = (email) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return regex.test(email)
+  }
+
+  // Fonction qui se déclenche lors du changement de valeur de l'email
+  const handleEmailChange = (e) => {
+    const value = e.target.value
+    setEmail(value)
+    setFormError("")
+  }
+
+  // Fonction qui se déclenche lorsqu'on quitte le champ de l'email pour effectuer la validation
+  const handleEmailBlur = () => {
+    if (!validateEmail(email) && email !== "") {
+      setEmailError("Invalid email format")
+    } else {
+      setEmailError("")
+    }
+  }
+
+  // Fonction qui se déclenche lors du changement de valeur du mot de passe
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value)
+    setFormError("")
+  }
+
+  // Fonction qui se déclenche lors de la soumission du formulaire
   const handleSubmit = async (e) => {
     e.preventDefault()
+    if (!validateEmail(email)) {
+      setEmailError("Invalid email format")
+      return
+    }
+
+    // Envoi des données de connexion au store Redux
     const resultLogin = await dispatch(loginUser({ email, password }))
     if (loginUser.fulfilled.match(resultLogin)) {
       await dispatch(fetchUserProfile())
       navigate("/user")
+    } else {
+      setFormError("Invalid email or password")
     }
   }
 
@@ -32,8 +71,12 @@ const SignInForm = () => {
             type="email"
             id="username"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={handleEmailChange}
+            onBlur={handleEmailBlur}
+            className={emailError || formError ? "input-error" : ""}
+            autoComplete="email"
           />
+          {emailError && <span className="error-text">{emailError}</span>}
         </div>
         <div className="input-wrapper">
           <label htmlFor="password">Password</label>
@@ -41,7 +84,9 @@ const SignInForm = () => {
             type="password"
             id="password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={handlePasswordChange}
+            className={formError ? "input-error" : ""}
+            autoComplete="current-password"
           />
         </div>
         <div className="input-remember">
@@ -51,8 +96,8 @@ const SignInForm = () => {
         <button type="submit" className="sign-in-button" disabled={isLoading}>
           {isLoading ? "Signing In..." : "Sign In"}
         </button>
+        {formError && <p className="form-error">{formError}</p>}
       </form>
-      {error && <p className="error-message">{error}</p>}
     </section>
   )
 }

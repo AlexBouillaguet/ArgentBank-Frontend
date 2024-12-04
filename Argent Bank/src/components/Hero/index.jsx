@@ -1,4 +1,4 @@
-import './index.scss';
+import "./index.scss"
 
 const Hero = () => {
   return (
@@ -11,7 +11,7 @@ const Hero = () => {
         <p className="text">Open a savings account with Argent Bank today!</p>
       </section>
     </div>
-  );
-};
+  )
+}
 
-export default Hero;
+export default Hero

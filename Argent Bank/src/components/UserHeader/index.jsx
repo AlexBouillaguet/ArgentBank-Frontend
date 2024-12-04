@@ -7,6 +7,7 @@ const UserHeader = () => {
   const [isEditing, setIsEditing] = useState(false)
   const { userData } = useSelector((state) => state.user)
 
+  // Si l'on est en mode édition, on affiche le composant EditName
   if (isEditing) {
     return <EditName setIsEditing={setIsEditing} />
   }

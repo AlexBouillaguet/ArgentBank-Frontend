@@ -1,6 +1,7 @@
 import PropTypes from "prop-types"
 import "./index.scss"
 
+// Définition du composant FeatureItem qui affiche une icône, un titre et une description
 const FeatureItem = ({ icon, title, description }) => {
   return (
     <div className="feature-item">

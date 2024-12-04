@@ -5,12 +5,14 @@ import { clearUserData } from "../../features/userSlice"
 import logo from "../../assets/img/argentBankLogo.png"
 import "./index.scss"
 
+// Définition du composant Header qui gère la barre de navigation
 const Header = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { userData } = useSelector((state) => state.user)
   const { isAuthenticated } = useSelector((state) => state.auth)
 
+  // Fonction qui gère la déconnexion de l'utilisateur
   const handleSignOut = () => {
     dispatch(logout())
     dispatch(clearUserData())

@@ -1,9 +1,9 @@
-swagger: '2.0'
+swagger: "2.0"
 info:
   title: Bank Argent API Documentation
   description: Contains all available API endpoints for user and transaction management.
-  version: '1.0.0'
-  termsOfService: 'http://swagger.io/terms/'
+  version: "1.0.0"
+  termsOfService: "http://swagger.io/terms/"
 host: localhost:3001
 basePath: /api/v1
 schemes:
@@ -21,17 +21,17 @@ paths:
           description: Login Payload
           required: true
           schema:
-            $ref: '#/definitions/Login'
+            $ref: "#/definitions/Login"
       produces:
         - application/json
       responses:
-        '200':
+        "200":
           description: Login Successfully
           schema:
-            $ref: '#/definitions/LoginResponse'
-        '400':
+            $ref: "#/definitions/LoginResponse"
+        "400":
           description: Invalid Fields
-        '500':
+        "500":
           description: Internal Server Error
   /user/signup:
     post:
@@ -45,17 +45,17 @@ paths:
           description: Signup Payload
           required: true
           schema:
-            $ref: '#/definitions/User'
+            $ref: "#/definitions/User"
       produces:
         - application/json
       responses:
-        '200':
+        "200":
           description: Signup Successfully
           schema:
-            $ref: '#/definitions/ApiResponse'
-        '400':
+            $ref: "#/definitions/ApiResponse"
+        "400":
           description: Invalid Fields
-        '500':
+        "500":
           description: Internal Server Error
   /user/profile:
     get:
@@ -66,13 +66,13 @@ paths:
       summary: User Profile API
       description: API for fetching a user profile
       responses:
-        '200':
+        "200":
           description: User profile retrieved successfully
           schema:
-            $ref: '#/definitions/UserProfile'
-        '400':
+            $ref: "#/definitions/UserProfile"
+        "400":
           description: Invalid Fields
-        '500':
+        "500":
           description: Internal Server Error
     put:
       security:
@@ -87,17 +87,17 @@ paths:
           description: Update user profile attributes
           required: true
           schema:
-            $ref: '#/definitions/UserProfile'
+            $ref: "#/definitions/UserProfile"
       produces:
         - application/json
       responses:
-        '200':
+        "200":
           description: User profile updated successfully
           schema:
-            $ref: '#/definitions/ApiResponse'
-        '400':
+            $ref: "#/definitions/ApiResponse"
+        "400":
           description: Invalid Fields
-        '500':
+        "500":
           description: Internal Server Error
   /transactions:
     get:
@@ -114,17 +114,17 @@ paths:
           type: string
           required: false
       responses:
-        '200':
+        "200":
           description: Transactions successfully retrieved
           schema:
             type: array
             items:
-              $ref: '#/definitions/Transaction'
-        '400':
+              $ref: "#/definitions/Transaction"
+        "400":
           description: Invalid request parameters
-        '401':
+        "401":
           description: Unauthorized - User must be authenticated
-        '500':
+        "500":
           description: Internal Server Error
   /transactions/{id}:
     get:
@@ -143,13 +143,13 @@ paths:
       produces:
         - application/json
       responses:
-        '200':
+        "200":
           description: Transaction details retrieved successfully
           schema:
-            $ref: '#/definitions/TransactionDetails'
-        '404':
+            $ref: "#/definitions/TransactionDetails"
+        "404":
           description: Transaction not found
-        '401':
+        "401":
           description: Unauthorized
     put:
       security:
@@ -179,15 +179,15 @@ paths:
       produces:
         - application/json
       responses:
-        '200':
+        "200":
           description: Transaction updated successfully
           schema:
-            $ref: '#/definitions/ApiResponse'
-        '400':
+            $ref: "#/definitions/ApiResponse"
+        "400":
           description: Invalid request body
-        '401':
+        "401":
           description: Unauthorized
-        '404':
+        "404":
           description: Transaction not found
 securityDefinitions:
   Bearer:
